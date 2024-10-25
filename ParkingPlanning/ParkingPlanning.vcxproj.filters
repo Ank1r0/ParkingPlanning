@@ -21,10 +21,10 @@
     <ClCompile Include="Car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HashTable.cpp">
+    <ClCompile Include="MyCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyCmd.cpp">
+    <ClCompile Include="Hashtable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="Car.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HashTable.h">
+    <ClInclude Include="MyCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyCmd.h">
+    <ClInclude Include="Hashtable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

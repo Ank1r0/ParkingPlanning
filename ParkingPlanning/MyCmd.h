@@ -1,12 +1,13 @@
 #pragma once
-#import "string"
+
+#include <string>
+#include <iostream>
+using namespace std;
 class MyCmd
 {
+public:
 	MyCmd() {};
 
-	std::string parse()
-	{
-
-	}
+static string parse(std::string input);
 };
 

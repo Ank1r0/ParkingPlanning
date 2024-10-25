@@ -37,13 +37,23 @@ Class command класс в котором будет использоватся
                
 */
 
-
 #include <iostream>
-#include "process.h"
-
+#include "MyCmd.h"
+#include "iostream"
+#include "Hashtable.h"
+#include "Car.h"
+using namespace std;
 
 int main()
 {   
+    //cout << MyCmd::parse("+ ASD");
     
+    Hashtable<Car *> hashtable;
+
+    //cout << hashtable.hashfunc("AD1337AD") << endl;
+    Car* a = new Car("AD1231AD",0,3);
+    hashtable.add("AD1337AD", a);
+
+    cout << hashtable.getN(26)->plate;
 }
 
