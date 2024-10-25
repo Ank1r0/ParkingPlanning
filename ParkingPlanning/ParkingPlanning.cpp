@@ -52,8 +52,13 @@ int main()
 
     //cout << hashtable.hashfunc("AD1337AD") << endl;
     Car* a = new Car("AD1231AD",0,3);
-    hashtable.add("AD1337AD", a);
+    cout << hashtable.add(a->plate, a) << endl;
+    cout << hashtable.add(a->plate, a) << endl;
 
-    cout << hashtable.getN(26)->plate;
+    cout << hashtable.getN(1)->plate << endl;
+    cout << hashtable.getN(2)->plate << endl;
+
+ 
+
 }
 
