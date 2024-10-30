@@ -23,17 +23,18 @@ class Hashtable
 
 public:
 
-    Hashtable();
+    Hashtable();    
     ~Hashtable();  
-    
+    int getcap();
     int add(const std::string& key, const T& data);
     int del(std::string _key);
     int check(std::string _key);
     T get(std::string _key);
     
 private:
+    Hashtable(int _newcap);
     T getN(int index);
     int reindex();
-    int hashfunc(const std::string& input);
+    unsigned int hashfunc(const std::string& input);
 
 };

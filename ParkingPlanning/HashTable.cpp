@@ -1,4 +1,4 @@
-#include "Hashtable.h"
+﻿#include "Hashtable.h"
 #include "Ticket.h"  
 #include <iostream>
 
@@ -14,10 +14,21 @@ Hashtable<T>::Hashtable() {
 }
 
 template <typename T>
+Hashtable<T>::Hashtable(int _newcap) {
+    size_ = 0;
+    capacity_ = _newcap;
+    db = new element * [capacity_];
+
+    for (int i = 0; i < capacity_; i++) {
+        db[i] = nullptr;
+    }
+}
+
+template <typename T>
 int Hashtable<T>::reindex()
 {
-    Hashtable<T> temp;
-    T data;
+    Hashtable<T> temp(getcap()*2);
+
     for (size_t i = 0; i < capacity_; i++)
     {
         if (db[i] != nullptr) 
@@ -28,7 +39,9 @@ int Hashtable<T>::reindex()
         }       
     }
 
+    
     std::swap(db, temp.db);
+    delete db;
     return 1;
 }
 
@@ -49,11 +62,16 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
         return -1;
     }
 
+    if (size_ >= (capacity_ / 4) * 3)
+    {
+        reindex();
+    }
+
     int index = hashfunc(_key) % capacity_;
 
     if (db[index] == nullptr) {
         db[index] = new element(_key, _data);   
-        size_++;  
+        size_++;        
         return 0;  
     }   
 
@@ -66,11 +84,7 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
             if (db[i % capacity_] == nullptr)
             {
                 db[i % capacity_] = new element(_key, _data);
-                size_++;
-                if (size_ >= (capacity_ / 4) * 3)
-                {
-                    reindex();
-                }
+                size_++;           
                 return 0;
             }
             ++i;
@@ -81,21 +95,29 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
 }
 
 template <typename T>
+int Hashtable<T>::getcap() { 
+    return capacity_;
+}
+
+template <typename T>
 T Hashtable<T>::get(string _key) { // GET BY KEY
 
     int index = hashfunc(_key) % capacity_;
 
     element* temp = db[index];
-    if (_key.compare(temp->key_) != 0)
+
+    if (temp == nullptr) {
+        return nullptr;
+    }
+
+    if (_key.compare(temp->key_) != 0) // переделать тут проверку на nullptr
     {
         int i = index;
        
         while (true)
-        {
-            
+        {           
             temp = db[i%capacity_];
             
-           // cout << db[i]->key_ << endl;
             if (temp == nullptr)
             {
                 cout << "notfound" << endl;
@@ -110,10 +132,8 @@ T Hashtable<T>::get(string _key) { // GET BY KEY
             if (_key.compare(temp->key_) == 0)
             {
                 return temp->get();
-            }           
-            
+            }                     
         }
-
         cout << "taken" << endl;
         return nullptr;
     }
@@ -134,7 +154,6 @@ int Hashtable<T>::check(std::string _key)  //0 - EMPTY, 1 - exists, -1 not found
 
     if (_key.compare(temp->key_) != 0)
     {
-
         int i = index;
 
         while (true)
@@ -184,13 +203,10 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
     {
         int i = index;
 
-
         while (true)
         {
+            temp = db[i % capacity_];           
 
-            temp = db[i % capacity_];
-
-            cout << db[i % capacity_]->key_ << endl;
             if (temp == nullptr)
             {
                 cout << "notfound" << endl;
@@ -203,12 +219,10 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
             }
 
             if (_key.compare(temp->key_) == 0)
-            {
-                cout << temp->key_ << endl;
+            {              
                 delete db[i % capacity_];
                 
                 db[i % capacity_] = nullptr;
-                cout << "detele done." << endl;
                 --size_;
 
                 return 1;
@@ -231,15 +245,14 @@ T Hashtable<T>::getN(int index) { // GET BY INDEX
 }
 
 template <typename T>
-int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
-    int hash = 0;
+unsigned int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
+    unsigned int hash = 0;
     for (size_t i = 0; i < input.size(); i++)
     {
         hash += pow( input.at(i) * (i) *input.size(),2);
     }
 
     return hash;
-   // return 1;
 }
 
 template class Hashtable<Ticket*>;

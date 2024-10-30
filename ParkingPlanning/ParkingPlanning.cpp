@@ -47,8 +47,8 @@ using namespace std;
 int main()
 {   
     Hashtable<Ticket*> test;
-    Ticket* a = new Ticket("AAB",0,"S16");
-    Ticket* b = new Ticket("ABA",0,"C32");
+    Ticket* a = new Ticket("AAA",0,"S16");
+    Ticket* b = new Ticket("AAA",0,"C32");
     Ticket* c = new Ticket("BAA",0,"C31");
 
     cout << "Check test before adding element: ";
