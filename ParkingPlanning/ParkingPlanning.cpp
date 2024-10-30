@@ -41,22 +41,32 @@ Class command класс в котором будет использоватся
 #include "MyCmd.h"
 #include "iostream"
 #include "Hashtable.h"
-#include "Car.h"
+#include "Ticket.h"
 using namespace std;
 
 int main()
 {   
-    //cout << MyCmd::parse("+ ASD");
+    Hashtable<Ticket*> test;
+    Ticket* a = new Ticket("AAB",0,"S16");
+    Ticket* b = new Ticket("ABA",0,"C32");
+    Ticket* c = new Ticket("BAA",0,"C31");
+
+    cout << "Check test before adding element: ";
+    cout << test.check("AD1231AD") << endl; 
+
+    test.add(a->plate, a);
+    test.add(b->plate, b);
+    test.add(c->plate, c);
+
+    cout << "Check test after adding element: ";
+    cout << test.check("ADNOT") << endl;
+
+    cout << "Delete test: ";
+    cout << test.del("AAAA") << endl;
     
-    Hashtable<Car *> hashtable;
+    cout << "Check test after deleting element: ";
+    cout << test.check("ADNOT") << endl;
 
-    //cout << hashtable.hashfunc("AD1337AD") << endl;
-    Car* a = new Car("AD1231AD",0,3);
-    cout << hashtable.add(a->plate, a) << endl;
-    cout << hashtable.add(a->plate, a) << endl;
-
-    cout << hashtable.getN(1)->plate << endl;
-    cout << hashtable.getN(2)->plate << endl;
 
  
 

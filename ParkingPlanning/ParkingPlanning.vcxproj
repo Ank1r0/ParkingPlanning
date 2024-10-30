@@ -127,13 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="Ticket.cpp" />
     <ClCompile Include="Hashtable.cpp" />
     <ClCompile Include="MyCmd.cpp" />
     <ClCompile Include="ParkingPlanning.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Car.h" />
+    <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="Ticket.h" />
     <ClInclude Include="Hashtable.h" />
     <ClInclude Include="MyCmd.h" />
   </ItemGroup>

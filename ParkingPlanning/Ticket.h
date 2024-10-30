@@ -7,15 +7,15 @@ Car class, в который будет входить Номер машины, 
 #include <string>
 
 using namespace std;
-class Car
+class Ticket
 {
 public:
 	string plate;
 	unsigned int IOtime;
-	char spot;
+	string spot;
 	int overalltime;
 
-	Car();
-	Car(string _plate, unsigned int _IOtime, char _spot);
+	Ticket();
+	Ticket(string _plate, unsigned int _IOtime, string _spot);
 };
 
