@@ -1,10 +1,19 @@
 #include "Parking.h"
 #include <string>
 #include <iostream>
+#include "Hashtable.h"
 using namespace std;
 
  char Parking::run() {
 
+	 Hashtable<Car*> park;
+	/* Car* a = new Car("Car1", 10);
+	 Car* b = new Car("Car2", 10);
+	 park.add("13", a);
+	 park.add("13", b);
+	 cout << park.get("13")->name;*/
+
+	 Car* temp = new Car("", 0);
 	 string input;
 	 int M = 0, H = 0,pt = 0;
 	 
@@ -38,19 +47,7 @@ using namespace std;
 				 cout << "Minutes are not correct." << endl;
 				 continue;
 			 }
-			 
-			 if ((H * 60 + M) < pt)
-			 {
-				cout << "prev time" << endl;
-				continue;
-
-			 }
-			 else
-			 {
-				 pt = H * 60 + M;
-			 }
-
-			 
+			 					 
 		 }
 		 else
 		 {
@@ -65,7 +62,18 @@ using namespace std;
 		 else {
 			 cout << "Not correct command" << endl;
 			 continue;
-			 
+
+		 }
+		 if(cmd != '=')
+		 if ((H * 60 + M) < pt)
+		 {
+			 cout << "prev time" << endl;
+			 continue;
+
+		 }
+		 else
+		 {
+			 pt = H * 60 + M;
 		 }
 		 
 		 switch (cmd) {
@@ -77,31 +85,60 @@ using namespace std;
 					cout << "name error" << endl;
 					continue;
 				}
-				name = input.substr(found+6,input.size()-1);
-				cout << "Car added, plate: '" << name <<'\'' << endl;
+				name = input.substr(found+6,input.size()-1);	
+
+				if (park.isExist(name)) {
+
+					cout << "Exist" << endl;
+					temp = park.get(name);
+
+					if (temp->onpark == true)
+					{
+						temp->allmin += pt - temp->IOtime;
+						temp->onpark = false;
+
+						cout << "car removed, min on park: " << temp->allmin << endl;
+						
+					}
+					else 
+					{
+						temp->IOtime = pt;
+						temp->onpark = true;
+						cout << "Car added" << endl;
+						
+					}
+					park.add(name, temp);
+
+				}
+				else
+				{
+					park.add(name, new Car(name, pt));
+					cout << "car added." << endl;
+				}
 				 break;
-			case '=':
-				if (H != 0 || M != 0)
+			case '=':				
 					pt = 0;
-					cout << "End of day only 0:00 time can be used." << endl;
+					
+				for (int i = 0; i < park.getcap(); ++i)
+				{
+					if (park.getN(i) != nullptr)
+					{
+						if (park.getN(i)->onpark)
+						{
+							park.getN(i)->allmin += 1440 - park.getN(i)->IOtime;
+							park.getN(i)->IOtime = 0;
+						}						
+						cout << "Car on parking: " << (park.getN(i)->onpark ? "Yes" : "No") << ", plate:" << park.getN(i)->name << ", overall time:" << park.getN(i)->allmin << endl;
+					}
+				}					
 					continue;
 				 break;
 			default:
-
+				
 					 cout << "command out of list" << endl;
 				 continue;
 				 
 		 }
-		 cout << "Hours: " << H << endl;
-		 cout << "Minutes: " << M << endl;
-		 cout << "cmd:" << cmd << endl;
-
-		
-
-	 }
-	 
-
-	 
-	 
+	 }	 
 	 return 'k';
 }

@@ -26,12 +26,12 @@ public:
     Hashtable();    
     ~Hashtable();  
     int getcap();
+    int getsize();
     int add(const std::string& key, const T& data);
     int del(std::string _key);
     bool isExist(std::string _key);
     T get(std::string _key);
     T getN(int index);
-
 private:
     Hashtable(int _newcap);
     int reindex();

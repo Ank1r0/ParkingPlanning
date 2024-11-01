@@ -109,6 +109,11 @@ template <typename T>
 int Hashtable<T>::getcap() { 
     return capacity_;
 }
+template <typename T>
+int Hashtable<T>::getsize() {
+    return size_;
+}
+
 
 template <typename T>
 T Hashtable<T>::get(string _key) { // GET BY KEY
@@ -188,7 +193,6 @@ bool Hashtable<T>::isExist(std::string _key)  //0 - EMPTY, 1 - exists, -1 not fo
         }
     }
 
-
     else return 1;
 }
 
@@ -249,7 +253,6 @@ T Hashtable<T>::getN(int index) { // GET BY INDEX
     element* temp = db[index];
     if (temp == nullptr)
     {
-        cout << "empty";
         return nullptr;
     }
     return temp->get();
