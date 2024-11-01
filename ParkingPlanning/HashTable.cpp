@@ -1,5 +1,5 @@
 ﻿#include "Hashtable.h"
-#include "Ticket.h"  
+#include "Car.h"  
 #include <iostream>
 
 template <typename T>
@@ -15,6 +15,8 @@ Hashtable<T>::Hashtable() {
 
 template <typename T>
 Hashtable<T>::Hashtable(int _newcap) {
+    if (_newcap < 0)
+        return;
     size_ = 0;
     capacity_ = _newcap;
     db = new element * [capacity_];
@@ -40,8 +42,8 @@ int Hashtable<T>::reindex()
     }
 
     
-    std::swap(db, temp.db);
-    delete db;
+    std::swap(db, temp.db); 
+    delete [] temp.db;
     return 1;
 }
 
@@ -58,7 +60,7 @@ Hashtable<T>::~Hashtable() {
 template <typename T>
 int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - element added
     
-    if (_key.empty() || size_ == capacity_) {
+    if (_key.empty() || size_ - 1 == capacity_) {
         return -1;
     }
 
@@ -75,18 +77,27 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
         return 0;  
     }   
 
+
     if (db[index] != nullptr) 
     {        
         int i = index;
-        
         while (true)
         {   
+
             if (db[i % capacity_] == nullptr)
             {
                 db[i % capacity_] = new element(_key, _data);
-                size_++;           
+                size_++;
                 return 0;
             }
+
+            if (_key.compare(db[i % capacity_]->key_) == 0)
+            {
+                
+                db[i % capacity_]->data_ = _data;
+                return 0;
+            }
+         
             ++i;
         }       
     }
@@ -141,14 +152,14 @@ T Hashtable<T>::get(string _key) { // GET BY KEY
 }
 
 template <typename T>
-int Hashtable<T>::check(std::string _key)  //0 - EMPTY, 1 - exists, -1 not found.
+bool Hashtable<T>::isExist(std::string _key)  //0 - EMPTY, 1 - exists, -1 not found.
 {
     int index = hashfunc(_key)%capacity_;
     
     if (db[index] == nullptr)
-        return 0;
+        return false;
     if (_key.compare(db[index]->key_) == 0)
-        return 1;
+        return true;
 
     element* temp = db[index];
 
@@ -162,7 +173,7 @@ int Hashtable<T>::check(std::string _key)  //0 - EMPTY, 1 - exists, -1 not found
 
             if (temp == nullptr)
             {                
-                return -1;
+                return false;
             }
 
             if (_key.compare(temp->key_) != 0)
@@ -172,7 +183,7 @@ int Hashtable<T>::check(std::string _key)  //0 - EMPTY, 1 - exists, -1 not found
 
             if (_key.compare(temp->key_) == 0)
             {              
-                return 1;
+                return true;
             }
         }
     }
@@ -252,7 +263,8 @@ unsigned int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
         hash += pow( input.at(i) * (i) *input.size(),2);
     }
 
-    return hash;
+    //return hash;
+    return 1;
 }
 
-template class Hashtable<Ticket*>;
+template class Hashtable< Car *>;

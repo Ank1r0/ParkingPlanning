@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <string>
-#include "Ticket.h"
+#include "Car.h"
 template <typename T>
 class Hashtable
 {
@@ -28,12 +28,12 @@ public:
     int getcap();
     int add(const std::string& key, const T& data);
     int del(std::string _key);
-    int check(std::string _key);
+    bool isExist(std::string _key);
     T get(std::string _key);
-    
+    T getN(int index);
+
 private:
     Hashtable(int _newcap);
-    T getN(int index);
     int reindex();
     unsigned int hashfunc(const std::string& input);
 
