@@ -205,7 +205,7 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
         return 0;
 
     else if (_key.compare(db[index]->key_) == 0) 
-    {
+    {      
         delete db[index];
         db[index] = nullptr;
         --size_;

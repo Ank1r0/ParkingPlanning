@@ -89,7 +89,7 @@ using namespace std;
 
 				if (park.isExist(name)) {
 
-					cout << "Exist" << endl;
+				
 					temp = park.get(name);
 
 					if (temp->onpark == true)
