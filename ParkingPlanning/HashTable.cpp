@@ -1,6 +1,7 @@
 ﻿#include "Hashtable.h"
 #include "Car.h"  
 #include <iostream>
+#include <vector>
 
 template <typename T>
 Hashtable<T>::Hashtable() {
@@ -60,7 +61,7 @@ Hashtable<T>::~Hashtable() {
 template <typename T>
 int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - element added
     
-    if (_key.empty() || size_ - 1 == capacity_) {
+    if (_key.empty()) {
         return -1;
     }
 
@@ -71,38 +72,19 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
 
     int index = hashfunc(_key) % capacity_;
 
-    if (db[index] == nullptr) {
-        db[index] = new element(_key, _data);   
-        size_++;        
-        return 0;  
-    }   
-
-
-    if (db[index] != nullptr) 
-    {        
-        int i = index;
-        while (true)
-        {   
-
-            if (db[i % capacity_] == nullptr)
-            {
-                db[i % capacity_] = new element(_key, _data);
-                size_++;
-                return 0;
-            }
-
-            if (_key.compare(db[i % capacity_]->key_) == 0)
-            {
-                
-                db[i % capacity_]->data_ = _data;
-                return 0;
-            }
-         
-            ++i;
-        }       
+    while (db[index % capacity_] != nullptr)
+    {
+        if (_key.compare(db[index % capacity_]->key_) == 0)
+        {            
+            db[index % capacity_]->data_ = _data;
+            return 0;
+        }
+        ++index;
     }
 
-    return -1;
+    db[index % capacity_] = new element(_key, _data);
+    size_++;
+    return 0;
 }
 
 template <typename T>
@@ -120,130 +102,73 @@ T Hashtable<T>::get(string _key) { // GET BY KEY
 
     int index = hashfunc(_key) % capacity_;
 
-    element* temp = db[index];
-
-    if (temp == nullptr) {
-        return nullptr;
-    }
-
-    if (_key.compare(temp->key_) != 0) // переделать тут проверку на nullptr
+    while (db[index % capacity_])
     {
-        int i = index;
-       
-        while (true)
-        {           
-            temp = db[i%capacity_];
-            
-            if (temp == nullptr)
-            {
-                cout << "notfound" << endl;
-                return nullptr;
-            }
-            
-            if (_key.compare(temp->key_) != 0)
-            {
-                ++i;               
-            }
-
-            if (_key.compare(temp->key_) == 0)
-            {
-                return temp->get();
-            }                     
+        if (!_key.compare(db[index % capacity_]->key_))
+        {
+            return db[index % capacity_]->data_;
         }
-        cout << "taken" << endl;
-        return nullptr;
+        ++index;
     }
-    return temp->get();
+
+    return nullptr;
 }
 
 template <typename T>
 bool Hashtable<T>::isExist(std::string _key)  //0 - EMPTY, 1 - exists, -1 not found.
 {
-    int index = hashfunc(_key)%capacity_;
-    
-    if (db[index] == nullptr)
-        return false;
-    if (_key.compare(db[index]->key_) == 0)
-        return true;
+    int index = hashfunc(_key) % capacity_;
 
-    element* temp = db[index];
-
-    if (_key.compare(temp->key_) != 0)
+    while (db[index % capacity_])
     {
-        int i = index;
-
-        while (true)
+        if (!_key.compare(db[index % capacity_]->key_))
         {
-            temp = db[i % capacity_];
-
-            if (temp == nullptr)
-            {                
-                return false;
-            }
-
-            if (_key.compare(temp->key_) != 0)
-            {
-                ++i;
-            }
-
-            if (_key.compare(temp->key_) == 0)
-            {              
-                return true;
-            }
+            return true;
         }
+        ++index;
     }
 
-    else return 1;
+    return false;
 }
 
 template <typename T>
 int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete.
-{
-    int index = hashfunc(_key) % capacity_;
+{   
+    unsigned int index = hashfunc(_key) % capacity_,left = index, right = index;
 
-    if (db[index] == nullptr)
-        return 0;
+    while (db[left])
+    {            
+        --left;
+        if (left < 0) { left = capacity_ - 1; }
+    }
 
-    else if (_key.compare(db[index]->key_) == 0) 
+    while (db[right % capacity_])
     {      
-        delete db[index];
-        db[index] = nullptr;
-        --size_;
-        return 1;
+        right++;
     }
-   
-    element* temp = db[index];
-    
-    if (_key.compare(temp->key_) != 0)
-    {
-        int i = index;
 
-        while (true)
+    vector<element*> temp;
+    for (size_t i = left + 1; i < right; i++)
+    {        
+        if (_key.compare(db[i % capacity_]->key_))
         {
-            temp = db[i % capacity_];           
-
-            if (temp == nullptr)
-            {
-                cout << "notfound" << endl;
-                return -1;
-            }
-
-            if (_key.compare(temp->key_) != 0)
-            {
-                ++i;
-            }
-
-            if (_key.compare(temp->key_) == 0)
-            {              
-                delete db[i % capacity_];
-                
-                db[i % capacity_] = nullptr;
-                --size_;
-
-                return 1;
-            }
-        }       
+            temp.push_back(db[i % capacity_]);
+        }
+        else
+        {
+            db[i % capacity_] = nullptr;
+            delete db[i % capacity_];
+            continue;
+        }
+        db[i % capacity_] = nullptr;       
     }
+
+    for (size_t i = 0; i < temp.size(); i++)
+    {
+        add(temp.at(i)->key_, temp.at(i)->data_);
+    }
+
+    return 1;
 }
 
 template <typename T>
@@ -266,8 +191,10 @@ unsigned int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
         hash += pow( input.at(i) * (i) *input.size(),2);
     }
 
-    //return hash;
-    return 1;
+    return hash;
+    //return 99;
 }
+
+
 
 template class Hashtable< Car *>;
