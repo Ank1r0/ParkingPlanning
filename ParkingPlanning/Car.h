@@ -13,6 +13,7 @@ class Car
 public:
 	Car();
 	Car(string _name,int _IOtime);
+	Car(string _name,int _IOtime, unsigned long allmin);
 	~Car();
 
 	string plate();

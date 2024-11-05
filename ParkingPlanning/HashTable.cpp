@@ -132,6 +132,37 @@ bool Hashtable<T>::isExist(std::string _key)  //0 - EMPTY, 1 - exists, -1 not fo
 }
 
 template <typename T>
+void Hashtable<T>::getAll() {
+    vector<element*> temp;
+    for (size_t i = 0; i < capacity_; i++)
+    {
+        if(db[i])
+            temp.push_back(db[i]);       
+    }
+  
+    element* buff1;
+    for (size_t i = 1; i < temp.size(); i++)
+    {
+        for (size_t j = i; j > 0; j--)
+        {
+            if (j > 0 && temp.at(j)->data_->allmin < temp.at(j - 1)->data_->allmin)
+            {
+                buff1 = temp.at(j);
+                temp.at(j) = temp.at(j - 1 );
+                temp.at(j - 1) = buff1;
+            }
+        }
+
+    }
+
+    for (int i = 0; i < temp.size(); i++)
+    {
+        cout << "Car on parking: " << (temp.at(i)->data_->onpark ? "Yes" : "No") << ", plate:" << temp.at(i)->data_->name << ", overall time:" << temp.at(i)->data_->allmin << endl;
+        //cout << temp[i]->data_->name <<" "<< temp[i]->data_->allmin << endl;
+    }
+}
+
+template <typename T>
 int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete.
 {   
     unsigned int index = hashfunc(_key) % capacity_,left = index, right = index;
@@ -191,8 +222,8 @@ unsigned int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
         hash += pow( input.at(i) * (i) *input.size(),2);
     }
 
-    return hash;
-    //return 99;
+    //return hash;
+    return 1;
 }
 
 

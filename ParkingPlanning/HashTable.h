@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include "Car.h"
+#include <vector>
 template <typename T>
 class Hashtable
 {
@@ -32,6 +33,7 @@ public:
     bool isExist(std::string _key);
     T get(std::string _key);
     T getN(int index);
+    void getAll();
 private:
     Hashtable(int _newcap);
     int reindex();
