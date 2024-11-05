@@ -8,9 +8,18 @@
 using namespace std;
 
 int main()
-{   
+{
+    Parking a;
+
+     a.run();
+
+
+
+
+
     //Parking::run(); 
-    Car* a = new Car("ASD", 0);
+    
+    /*Car* a = new Car("ASD", 0);
     Car* b = new Car("AAAA", 0);
     Car* c = new Car("ASV", 0);
     Car* d = new Car("ADSA", 0);
@@ -27,6 +36,6 @@ int main()
     park.del("ASD");
    
     cout << (park.isExist("AAAA") ? "YES" : "NO") << endl;
-    cout << (park.isExist("ASD") ? "YES" : "NO") << endl;
+    cout << (park.isExist("ASD") ? "YES" : "NO") << endl;*/
 }
 

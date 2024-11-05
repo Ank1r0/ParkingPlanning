@@ -27,6 +27,9 @@
     <ClCompile Include="Parking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Cmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hashtable.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
