@@ -1,4 +1,4 @@
-﻿﻿#include "Hashtable.h"
+﻿#include "Hashtable.h"
 #include "Car.h"  
 #include <iostream>
 #include <vector>
@@ -30,21 +30,21 @@ Hashtable<T>::Hashtable(int _newcap) {
 template <typename T>
 int Hashtable<T>::reindex()
 {
-    Hashtable<T> temp(getcap() * 2);
+    Hashtable<T> temp(getcap()*2);
 
     for (size_t i = 0; i < capacity_; i++)
     {
-        if (db[i] != nullptr)
-        {
+        if (db[i] != nullptr) 
+        {   
             temp.add(db[i]->key_, db[i]->get());
             delete db[i];
             db[i] = nullptr;
-        }
+        }       
     }
 
-
-    std::swap(db, temp.db);
-    delete[] temp.db;
+    
+    std::swap(db, temp.db); 
+    delete [] temp.db;
     return 1;
 }
 
@@ -52,15 +52,15 @@ template <typename T>
 Hashtable<T>::~Hashtable() {
     for (int i = 0; i < capacity_; i++) {
         if (db[i] != nullptr) {
-            delete db[i];
+            delete db[i];  
         }
     }
-    delete[] db;
+    delete[] db; 
 }
 
 template <typename T>
 int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - element added
-
+    
     if (_key.empty()) {
         return -1;
     }
@@ -75,7 +75,7 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
     while (db[index % capacity_] != nullptr)
     {
         if (_key.compare(db[index % capacity_]->key_) == 0)
-        {
+        {            
             db[index % capacity_]->data_ = _data;
             return 0;
         }
@@ -88,7 +88,7 @@ int Hashtable<T>::add(const std::string& _key, const T& _data) { // ADD 0 - elem
 }
 
 template <typename T>
-int Hashtable<T>::getcap() {
+int Hashtable<T>::getcap() { 
     return capacity_;
 }
 template <typename T>
@@ -132,74 +132,40 @@ bool Hashtable<T>::isExist(std::string _key)  //0 - EMPTY, 1 - exists, -1 not fo
 }
 
 template <typename T>
-void Hashtable<T>::getAll() {
-    vector<element*> temp;
+vector<T> Hashtable<T>::getAll() {
+    vector<T> temp;
     for (size_t i = 0; i < capacity_; i++)
     {
-        if (db[i])
-            temp.push_back(db[i]);
+        if(db[i])
+            temp.push_back(db[i]->data_);
     }
-
-    element* buff1;
-    for (size_t i = 1; i < temp.size(); i++)
-    {
-        for (size_t j = i; j > 0; j--)
-        {
-            if (j > 0 && temp.at(j)->data_->allmin < temp.at(j - 1)->data_->allmin)
-            {
-                buff1 = temp.at(j);
-                temp.at(j) = temp.at(j - 1);
-                temp.at(j - 1) = buff1;
-            }
-        }
-
-    }
-
-    for (int i = 0; i < temp.size(); i++)
-    {
-        cout << "Car on parking: " << (temp.at(i)->data_->onpark ? "Yes" : "No") << ", plate:" << temp.at(i)->data_->name << ", overall time:" << temp.at(i)->data_->allmin << endl;
-        //cout << temp[i]->data_->name <<" "<< temp[i]->data_->allmin << endl;
-    }
+    
+    return temp;   
 }
 
 template <typename T>
 int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete.
-{
-    unsigned int index = hashfunc(_key) % capacity_, left = index, right = index;
-
-    while (db[left])
-    {
-        --left;
-        if (left < 0) { left = capacity_ - 1; }
+{   
+    unsigned int index = hashfunc(_key) % capacity_, deli;
+    
+    while (db[index % capacity_] && db[index % capacity_]->key_.compare(_key)) 
+    {              
+        ++index;
     }
+    if (!db[index % capacity_] || db[index % capacity_]->key_.compare(_key)) { return 0; }
 
-    while (db[right % capacity_])
+    deli = index;
+
+    while (db[index % capacity_])
     {
-        right++;
+        ++index;
     }
+    
+    delete db[deli];            // Properly delete the element
+    db[deli] = db[index % capacity_];  // Move the element
+    db[index % capacity_] = nullptr;
 
-    vector<element*> temp;
-    for (size_t i = left + 1; i < right; i++)
-    {
-        if (_key.compare(db[i % capacity_]->key_))
-        {
-            temp.push_back(db[i % capacity_]);
-        }
-        else
-        {
-            db[i % capacity_] = nullptr;
-            delete db[i % capacity_];
-            continue;
-        }
-        db[i % capacity_] = nullptr;
-    }
-
-    for (size_t i = 0; i < temp.size(); i++)
-    {
-        add(temp.at(i)->key_, temp.at(i)->data_);
-    }
-
-    return 1;
+    return 0;
 }
 
 template <typename T>
@@ -219,13 +185,13 @@ unsigned int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
     unsigned int hash = 0;
     for (size_t i = 0; i < input.size(); i++)
     {
-        hash += pow(input.at(i) * (i)*input.size(), 2);
+        hash += pow( input.at(i) * (i) *input.size(),2);
     }
 
     //return hash;
-    return 1;
+    return 0;
 }
 
 
 
-template class Hashtable< Car*>;
+template class Hashtable< Car *>;

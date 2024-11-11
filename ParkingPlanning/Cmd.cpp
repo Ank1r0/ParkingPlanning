@@ -1,4 +1,4 @@
-#include "Cmd.h"
+﻿#include "Cmd.h"
 
 
 Cmd::Cmd() // * - add, = end of day
@@ -54,7 +54,7 @@ Cmd* Cmd::parse(string input) {
 		case '*':
 			if (found + 6 > input.size() - 1)
 			{
-				cmd->msg = "name error";				
+				cmd->msg = "name error";
 			}
 			cmd->plate = input.substr(found + 6, input.size() - 1);
 			cmd->type = '*';
@@ -73,9 +73,9 @@ Cmd* Cmd::parse(string input) {
 		cmd->msg = "Wrong input";
 		return cmd;
 	}
-	
+
 	cmd->time = H * 60 + M;
-			
+
 	return cmd;
 
 }

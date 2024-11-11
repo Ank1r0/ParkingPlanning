@@ -1,4 +1,4 @@
-﻿﻿#pragma once
+﻿#pragma once
 #include <string>
 #include "Car.h"
 #include <vector>
@@ -7,10 +7,10 @@ class Hashtable
 {
     int capacity_;
     int size_;
-
+   
     class element {
     public:
-        std::string key_;
+        std::string key_;  
         T data_;
 
         element(const std::string& _key, const T& _data) : key_(_key), data_(_data) {}
@@ -24,8 +24,8 @@ class Hashtable
 
 public:
 
-    Hashtable();
-    ~Hashtable();
+    Hashtable();    
+    ~Hashtable();  
     int getcap();
     int getsize();
     int add(const std::string& key, const T& data);
@@ -33,7 +33,12 @@ public:
     bool isExist(std::string _key);
     T get(std::string _key);
     T getN(int index);
-    void getAll();
+    vector<T> getAll();
+
+
+
+
+
 private:
     Hashtable(int _newcap);
     int reindex();

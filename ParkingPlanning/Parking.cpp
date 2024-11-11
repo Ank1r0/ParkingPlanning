@@ -6,9 +6,9 @@
 
 using namespace std;
 int Parking::rezero() {
-	park.getAll();
-	return 2;
-	/*
+	//park.getAll();
+	
+	
 	for (int i = 0; i < park.getcap(); ++i)
 	{
 		if (park.getN(i) != nullptr)
@@ -20,8 +20,8 @@ int Parking::rezero() {
 			}
 			cout << "Car on parking: " << (park.getN(i)->onpark ? "Yes" : "No") << ", plate:" << park.getN(i)->name << ", overall time:" << park.getN(i)->allmin << endl;
 		}
-	}*/
-	
+	}
+	return 2;
 }
 
 int Parking::checkpoint(Cmd* cmd)
@@ -75,13 +75,14 @@ void Parking::run() {
 	bool exitcmd = false;
 	string input;
 	Cmd* cmd = new Cmd();
+	Cmd cmd1;
 	int lastcmdTime = 0;
 	
 	while(!exitcmd)
 	{
 		getline(cin, input);
 
-		cmd = Cmd::parse(input);
+		cmd = Cmd::parse(input, cmd1);
 
 		if (cmd->time < lastcmdTime && cmd->type != '=') // prev time check
 		{

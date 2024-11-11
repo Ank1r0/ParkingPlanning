@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 using namespace std;
+
+
 class Cmd
 {
 public:
@@ -12,6 +14,11 @@ public:
 
 	Cmd();
 	~Cmd();
+	
+	static void parse(string input, Cmd& cmd);
+	//static void parseA(string input, Cmd &cmd);
 
-	static Cmd* parse(string input);
+	void clear();
+	
 };
+
