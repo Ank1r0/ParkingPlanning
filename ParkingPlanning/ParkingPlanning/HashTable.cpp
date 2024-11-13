@@ -144,27 +144,41 @@ vector<T> Hashtable<T>::getAll() {
 }
 
 template <typename T>
-int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete.
-{   
-    unsigned int index = hashfunc(_key) % capacity_, deli;
-    
-    while (db[index % capacity_] && db[index % capacity_]->key_.compare(_key)) 
-    {              
-        ++index;
-    }
-    if (!db[index % capacity_] || db[index % capacity_]->key_.compare(_key)) { return 0; }
+void Hashtable<T>::addN(Hashtable::element* element)
+{
+    int index = hashfunc(element->key_) % capacity_;
 
-    deli = index;
-
-    while (db[index % capacity_])
+    while (db[index % capacity_] != nullptr)
     {
         ++index;
     }
-    
-    delete db[deli];            // Properly delete the element
-    db[deli] = db[index % capacity_];  // Move the element
-    db[index % capacity_] = nullptr;
 
+    db[index % capacity_] = element;   
+    return 1;
+}
+
+template <typename T>
+int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete.
+{   
+    unsigned int index = hashfunc(_key) % capacity_;
+    
+    while (db[index % capacity_]) 
+    {              
+        if (!db[index % capacity_]->key_.compare(_key))
+        {
+            delete db[index % capacity_];
+            db[index % capacity_] = nullptr;   
+            element* temp;
+            while (db[++index % capacity_])
+            {
+                temp = db[index % capacity_];
+                db[index % capacity_] = nullptr;
+                addN(temp);               
+            }
+            return 1;
+        }
+        ++index;
+    }
     return 0;
 }
 

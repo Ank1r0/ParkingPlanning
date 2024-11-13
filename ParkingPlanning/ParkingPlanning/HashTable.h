@@ -42,6 +42,7 @@ public:
 private:
     Hashtable(int _newcap);
     int reindex();
+    void addN(Hashtable::element* _key);
     unsigned int hashfunc(const std::string& input);
 
 };
