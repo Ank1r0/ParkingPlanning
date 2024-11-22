@@ -177,8 +177,11 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
 
             for (size_t i = 0; i < temp.size(); i++)
             {
-                add(temp.at(i)->key_, temp.at(i)->data_);
+                //add(temp.at(i)->key_, temp.at(i)->data_);
+                addN(temp.at(i));
             }
+
+            temp.clear();
             return 1;
 
         }

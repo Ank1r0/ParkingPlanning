@@ -37,7 +37,7 @@ int Parking::list(int cmdTime){
 	for (int i = 0; i < temp.size(); i++)
 	{
 		min = (temp.at(i)->onpark ? (temp.at(i)->allmin + cmdTime - temp.at(i)->IOtime) : (temp.at(i)->allmin));
-		cout << "-" << (temp.at(i)->onpark ? " * " : " ") << temp.at(i)->name << ", overall time:" << minToHM(min) << endl;
+		cout << "-" << (temp.at(i)->onpark ? " * " : " ") << temp.at(i)->name << " " << minToHM(min) << endl;
 	}
 	return 4;
 }
@@ -49,7 +49,7 @@ int Parking::rezero() {
 	for (int i = 0; i < temp.size(); ++i)
 	{
 		
-		if (park.getN(i)->onpark)
+		if (park.getN(i) && park.getN(i)->onpark)
 		{
 			park.getN(i)->allmin += 1440 - park.getN(i)->IOtime;
 			park.getN(i)->IOtime = 0;
@@ -100,12 +100,12 @@ int Parking::action(Cmd &cmd) {
 	case '=':
 		return rezero(); //2	
 	case '-':
-		cout << "Exit initiated.\n";
+		//cout << "Exit initiated.\n";
 		return 0;
 	case 'l':
 		return list(cmd.time);
 	default:
-		cout << "Command not in list\n";
+		cout << "- Non entrance entry\n";
 		return 3;
 	}
 }
@@ -152,7 +152,7 @@ void Parking::run() {
 
 		if (cmd.time < lastcmdTime && cmd.type != '=') // prev time check
 		{
-			cout << "Cannot process dates or times in the past.\n";
+			cout << "- Non entrance entry\n";
 			continue;
 		}
 		lastcmdTime = cmd.time;

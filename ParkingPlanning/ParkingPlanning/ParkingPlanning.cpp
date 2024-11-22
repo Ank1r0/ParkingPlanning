@@ -10,11 +10,11 @@ using namespace std;
 int main()
 {   
     //cout << Parking::minToHM(13131) << endl;
-    //Parking a;
+    Parking a;
 
   
   
-   // a.run();
+    a.run();
 
  
      
@@ -23,7 +23,9 @@ int main()
 
 
    // Parking::run(); 
-    
+
+    //STARTSTARTSTARTSTARTSTARTSTART
+    /* 
     Car* a = new Car("A", 0,10);
     Car* b = new Car("B", 0,20);
     Car* c = new Car("C", 0,30);
@@ -94,6 +96,38 @@ int main()
         cout << vec.at(i)->name << endl;
     }
     cout << "-----------------------\n";
+
+
+    for (size_t i = 0; i < 17; i++)
+    {
+        park.del(a2->plate());
+        park.del(b2->plate());
+        park.del(c2->plate());
+        park.del(d2->plate());
+
+        park.add(a2->plate(), a2);
+        park.add(b2->plate(), b2);
+        park.add(c2->plate(), c2);
+        park.add(d2->plate(), d2);
+
+        cout << i << "\n" ;
+    }
+
+    
+
+
+   
+    vec = park.getAll();
+
+    for (size_t i = 0; i < vec.size(); i++)
+    {
+        cout << vec.at(i)->name << endl;
+    }
+    cout << "-----------------------\n";
+    */
+    
+    //ENDENDENDENDENDEND
+
    /* cout << (park.isExist("AAAA") ? "YES" : "NO") << endl;
     cout << (park.isExist("ASD") ? "YES" : "NO") << endl;*/
 }
