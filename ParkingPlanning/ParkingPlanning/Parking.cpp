@@ -23,7 +23,7 @@ int Parking::list(int cmdTime){
 	{
 		for (size_t j = i; j > 0; j--)
 		{
-			if (j > 0 && temp.at(j)->allmin < temp.at(j - 1)->allmin)
+			if (j > 0 && temp.at(j)->allmin > temp.at(j - 1)->allmin)
 			{
 				buff1 = temp.at(j);
 				temp.at(j) = temp.at(j - 1);
@@ -33,9 +33,11 @@ int Parking::list(int cmdTime){
 		} 
 	}
 	
+	int min = 0;
 	for (int i = 0; i < temp.size(); i++)
 	{
-		cout << "Car on parking: " << (temp.at(i)->onpark ? "Yes" : "No") << ", plate:" << temp.at(i)->name << ", overall time:" << (temp.at(i)->onpark ? (temp.at(i)->allmin + cmdTime - temp.at(i)->IOtime) : (temp.at(i)->allmin)) << endl;
+		min = (temp.at(i)->onpark ? (temp.at(i)->allmin + cmdTime - temp.at(i)->IOtime) : (temp.at(i)->allmin));
+		cout << "-" << (temp.at(i)->onpark ? " * " : " ") << temp.at(i)->name << ", overall time:" << minToHM(min) << endl;
 	}
 	return 4;
 }
@@ -71,13 +73,13 @@ int Parking::checkpoint(Cmd &cmd)
 			temp->allmin += cmd.time - temp->IOtime;
 			temp->onpark = false;
 
-			cout << "car removed, min on park: " << temp->allmin << endl;
+			cout << "-Departure, overall time on parking: " << minToHM(temp->allmin) << endl;
 		}
 		else
 		{
 			temp->IOtime = cmd.time;
 			temp->onpark = true;
-			cout << "Car added" << endl;
+			cout << "-Arriving" << endl;
 		}
 		park.add(cmd.plate, temp);
 
@@ -85,7 +87,7 @@ int Parking::checkpoint(Cmd &cmd)
 	else
 	{
 		park.add(cmd.plate, new Car(cmd.plate, cmd.time));
-		cout << "car added." << endl;
+		cout << "-Arriving" << endl;
 	}
 	return 1;
 }
@@ -113,19 +115,19 @@ int Parking::errorParser(Cmd& cmd)
 	switch (cmd.type)
 	{
 	case 'f':
-		cout << "Message is not correct\n";
+		cout << "- Non entrance entry\n";
 		return -1;
 	case 'H':
-		cout << "Hours is not correct\n";
+		cout << "- Non entrance entry\n";
 		return -1;
 	case 'M':
-		cout << "Minutes is not correct\n";
+		cout << "- Non entrance entry\n";
 		return -1;
 	case 'T':
-		cout << "Time is not correct\n";
+		cout << "- Non entrance entry\n";
 		return -1;
 	case 'N':
-		cout << "Name is not correct\n";
+		cout << "- Non entrance entry\n";
 		return -1;
 	}
 }
@@ -136,7 +138,7 @@ void Parking::run() {
 	string input;
 	Cmd cmd;
 	int lastcmdTime = 0;
-	cout << "Parking started, enter the command e.g. 13:00 * car1, 1:00 * car1, 0:00 =" << endl;
+	cout << "-log: " << endl;
 	while(!exitcmd)
 	{
 		getline(cin, input);

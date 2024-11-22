@@ -10,11 +10,11 @@ using namespace std;
 int main()
 {   
     //cout << Parking::minToHM(13131) << endl;
-    //Parking a;
+    Parking a;
 
   
   
-    //a.run();
+    a.run();
 
  
      
@@ -24,7 +24,7 @@ int main()
 
    // Parking::run(); 
     
-    Car* a = new Car("A", 0,10);
+    /*Car* a = new Car("A", 0,10);
     Car* b = new Car("B", 0,20);
     Car* c = new Car("C", 0,30);
     Car* d = new Car("D", 0,40);
@@ -49,7 +49,7 @@ int main()
     for (size_t i = 0; i < vec.size(); i++)
     {
         cout << vec.at(i)->name << endl;
-    }
+    }*/
    /* cout << (park.isExist("AAAA") ? "YES" : "NO") << endl;
     cout << (park.isExist("ASD") ? "YES" : "NO") << endl;*/
 }

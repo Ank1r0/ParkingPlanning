@@ -154,7 +154,6 @@ void Hashtable<T>::addN(Hashtable::element* element)
     }
 
     db[index % capacity_] = element;   
-    return 1;
 }
 
 template <typename T>
@@ -168,14 +167,31 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
         {
             delete db[index % capacity_];
             db[index % capacity_] = nullptr;   
-            element* temp;
+            //A
+
+            /*element* temp;
             while (db[++index % capacity_])
             {
                 temp = db[index % capacity_];
                 db[index % capacity_] = nullptr;
                 addN(temp);               
             }
+            return 1;*/
+            
+            //B
+            vector<element*> temp;
+            while (db[++index % capacity_])
+            {                
+                temp.push_back(db[index % capacity_]);
+                db[index % capacity_] = nullptr;
+            }
+
+            for (size_t i = 0; i < temp.size(); i++)
+            {
+                addN(temp.at(i));
+            }
             return 1;
+
         }
         ++index;
     }
