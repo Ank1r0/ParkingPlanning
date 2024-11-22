@@ -167,18 +167,7 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
         {
             delete db[index % capacity_];
             db[index % capacity_] = nullptr;   
-            //A
-
-            /*element* temp;
-            while (db[++index % capacity_])
-            {
-                temp = db[index % capacity_];
-                db[index % capacity_] = nullptr;
-                addN(temp);               
-            }
-            return 1;*/
             
-            //B
             vector<element*> temp;
             while (db[++index % capacity_])
             {                
@@ -188,7 +177,7 @@ int Hashtable<T>::del(std::string _key)  // DELETE 0 - Empty, 1 Succesful delete
 
             for (size_t i = 0; i < temp.size(); i++)
             {
-                addN(temp.at(i));
+                add(temp.at(i)->key_, temp.at(i)->data_);
             }
             return 1;
 
@@ -219,7 +208,7 @@ unsigned int Hashtable<T>::hashfunc(const std::string& input) { // HASHFUNC
     }
 
     //return hash;
-    return 0;
+    return 1;
 }
 
 
